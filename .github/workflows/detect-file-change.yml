@@ -1,0 +1,13 @@
+name: print changed directories inside backend directory
+on:
+  push:
+    branches:
+      - main
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - name: print changed directories inside backend directory
+          run: |
+            git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep backend | cut -d/ -f2 | uniq
