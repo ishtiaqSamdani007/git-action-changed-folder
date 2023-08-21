@@ -1,0 +1,26 @@
+name: Detect Changed Microservices
+on:
+  push:
+    branches:
+      - main # Adjust this to your branch name
+  pull_request:
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Detect changes
+      id: changed_microservices
+      run: |
+        CHANGED_MICROSERVICES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^backend/' | cut -d '/' -f 2 | sort -u)
+        echo "::set-output name=changed_microservices::$CHANGED_MICROSERVICES"
+
+    - name: Print changed microservices
+      run: |
+        echo "Changed microservices:"
+        echo "${{ steps.changed_microservices.outputs.changed_microservices }}" > changed_microservices.txt
+        cat changed_microservices.txt
