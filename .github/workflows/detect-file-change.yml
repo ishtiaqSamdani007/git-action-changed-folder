@@ -58,8 +58,10 @@ jobs:
           done
 
       - name: List all chnaged folders
-        
+        env:
+            CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_folders }}
         run: |
-          for folder in ${{ steps.changed-files.outputs.all_changed_folders }}; do
-            echo "$folder was changed"
+          for folder in $CHANGED_FILES; do
+            path=$(echo "$folder" | cut -d'/' -f1)
+            echo "$path was changed"
           done
