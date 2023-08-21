@@ -61,6 +61,7 @@ jobs:
         env:
             CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_folders }}
         run: |
+          echo "$CHANGED_FILES"
           for folder in $CHANGED_FILES; do
             path=$(echo "$folder" | cut -d'/' -f1)
             echo "$path was changed"
